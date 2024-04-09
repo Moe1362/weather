@@ -35,9 +35,9 @@ Day.js library for date formatting
 
 .Usage:
 
-```md
-    [alt text](./assets/images/Weather.png)
-    ```
+
+![Weather Image](./assets/images/Weather.png)
+
 
 .Credits:
 
