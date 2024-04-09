@@ -1,6 +1,6 @@
-let searchHistoryForWeather = [];
-const WeatherAPIBaseURL = "https://api.openweathermap.org";
-const weatherAPIKey = "5bfa6b53d9ce074ff8c14f7144f1c1c3";
+let searchForWeather = [];
+const weatherBase = "https://api.openweathermap.org";
+const apiKey = "5bfa6b53d9ce074ff8c14f7144f1c1c3";
 
 const searchForm = document.querySelector("#search-form");
 const searchInput = document.querySelector("#search-input");
@@ -134,7 +134,7 @@ const fetchWeather = (location) => {
 
     const city = location.name;
     //https://api.openweathermap.org/data/2.5/forecast?lat={lat}&lon={lon}&appid={API key}
-    const apiURL = `${WeatherAPIBaseURL}/data/2.5/forecast?lat=${latitude}&lon=${longitude}&units=imperial&appid=${weatherAPIKey}`;
+    const apiURL = `${weatherBase}/data/2.5/forecast?lat=${latitude}&lon=${longitude}&units=imperial&appid=${apiKey}`;
     fetch(apiURL).then(function (response) {
         return response.json();
     }).then(function (data) {
@@ -148,15 +148,15 @@ const fetchWeather = (location) => {
 
 const createSearchHistory = () => {
     weatherHistoryContainer.innerHTML = "";
-    for (let i = 0; i < searchHistoryForWeather.length; i++) {
+    for (let i = 0; i < searchForWeather.length; i++) {
         const buttonEl = document.createElement("button");
         buttonEl.setAttribute("id", "city-button");
         buttonEl.setAttribute("type", "button");
         buttonEl.setAttribute("class", "btn btn-secondary btn-lg text-dark");
         buttonEl.setAttribute("aria-controls", "today forecast");
         buttonEl.classList.add("history-button");
-        buttonEl.setAttribute("data-search", searchHistoryForWeather[i]);
-        buttonEl.textContent = searchHistoryForWeather[i];
+        buttonEl.setAttribute("data-search", searchForWeather[i]);
+        buttonEl.textContent = searchForWeather[i];
         weatherHistoryContainer.append(buttonEl);
 
     }
@@ -164,17 +164,17 @@ const createSearchHistory = () => {
 }
 
 const appendWeatherHistory = (search) => {
-    if (searchHistoryForWeather.indexOf(search) !== -1) {
+    if (searchForWeather.indexOf(search) !== -1) {
         return;
     }
-    searchHistoryForWeather.push(search);
-    localStorage.setItem("weatherHistory", JSON.stringify(searchHistoryForWeather));
+    searchForWeather.push(search);
+    localStorage.setItem("weatherHistory", JSON.stringify(searchForWeather));
     createSearchHistory();
 }
 
 const fetchCoordinates = (search) => {
     //http://api.openweathermap.org/geo/1.0/direct?q={city name},{state code},{country code}&limit={limit}&appid={API key}
-    const url = `${WeatherAPIBaseURL}/geo/1.0/direct?q=${search}&appid=${weatherAPIKey}`;
+    const url = `${weatherBase}/geo/1.0/direct?q=${search}&appid=${apiKey}`;
     fetch(url).then(function (response) {
         return response.json();
     }).then(function (data) {
@@ -207,7 +207,7 @@ const handleSearchFormSubmit = (event) => {
 const initializeSearchHistory = () => {
     const storedWeatherHistory = JSON.parse(localStorage.getItem("weatherHistory"));
     if (storedWeatherHistory) {
-        searchHistoryForWeather = storedWeatherHistory;
+        searchForWeather = storedWeatherHistory;
     }
     createSearchHistory();
 }
@@ -229,6 +229,3 @@ weatherHistoryContainer.addEventListener("click", handleSearchHistoryClick);
 
 
 
-// const latitude = data[0].lat;
-//const longitude = data[0].lon;
-//console.log(data, latitude, longitude);
